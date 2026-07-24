@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "keypadlock:block/reinforced_chest" }
+  }
+}

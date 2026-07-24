@@ -1,0 +1,6 @@
+{
+  "item.keypadlock.lock": "Candado",
+  "item.keypadlock.key": "Llave",
+  "block.keypadlock.reinforced_chest": "Cofre Reforzado",
+  "block.keypadlock.reinforced_iron_door": "Puerta de Hierro Reforzada"
+}

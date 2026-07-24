@@ -1,0 +1,6 @@
+{
+  "item.keypadlock.lock": "Lock",
+  "item.keypadlock.key": "Key",
+  "block.keypadlock.reinforced_chest": "Reinforced Chest",
+  "block.keypadlock.reinforced_iron_door": "Reinforced Iron Door"
+}
