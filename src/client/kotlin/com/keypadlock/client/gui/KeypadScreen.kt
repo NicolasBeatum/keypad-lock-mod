@@ -56,6 +56,10 @@ class KeypadScreen(val blockPos: BlockPos, private val mode: KeypadMode) :
         private const val COLOR_PANEL_BG = 0xF0303036.toInt()
         private const val COLOR_PANEL_BORDER = 0xFF0F0F12.toInt()
         private const val COLOR_PANEL_BORDER_HILITE = 0xFF5A5A64.toInt()
+        private const val COLOR_STONE_A = 0xFF25262B.toInt()
+        private const val COLOR_STONE_B = 0xFF2D2E34.toInt()
+        private const val COLOR_STONE_C = 0xFF1B1C20.toInt()
+        private const val COLOR_RIVET = 0xFF777983.toInt()
         private const val COLOR_DIGITBOX_BG = 0xFF1C1C20.toInt()
         private const val COLOR_DIGITBOX_BORDER = 0xFF0A0A0C.toInt()
         private const val COLOR_TITLE_TEXT = 0xFFFFFFFF.toInt()
@@ -273,11 +277,43 @@ class KeypadScreen(val blockPos: BlockPos, private val mode: KeypadMode) :
     override fun extractRenderState(graphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, partialTick: Float) {
         graphics.fill(0, 0, width, height, COLOR_DIM_BG)
 
-        // Marco del panel: borde oscuro + relleno + linea de realce interior (efecto biselado simple).
+        // Panel pixel-art estilo Minecraft: losetas de deepslate, marco de hierro
+        // y remaches. Se dibuja con formas nativas, por lo que escala nitido en
+        // cualquier GUI Scale y no necesita una textura externa.
         graphics.fill(panelLeft - 2, panelTop - 2, panelRight + 2, panelBottom + 2, COLOR_PANEL_BORDER)
-        graphics.fill(panelLeft, panelTop, panelRight, panelBottom, COLOR_PANEL_BG)
+        graphics.fill(panelLeft, panelTop, panelRight, panelBottom, COLOR_STONE_A)
+        val tile = 8
+        var ty = panelTop + 2
+        var row = 0
+        while (ty < panelBottom - 2) {
+            var tx = panelLeft + 2
+            var col = 0
+            while (tx < panelRight - 2) {
+                val color = when ((row + col) % 3) {
+                    0 -> COLOR_STONE_B
+                    1 -> COLOR_STONE_A
+                    else -> COLOR_STONE_C
+                }
+                graphics.fill(tx, ty, minOf(tx + tile - 1, panelRight - 2), minOf(ty + tile - 1, panelBottom - 2), color)
+                tx += tile
+                col++
+            }
+            ty += tile
+            row++
+        }
         graphics.horizontalLine(panelLeft, panelRight - 1, panelTop, COLOR_PANEL_BORDER_HILITE)
         graphics.verticalLine(panelLeft, panelTop, panelBottom - 1, COLOR_PANEL_BORDER_HILITE)
+        graphics.horizontalLine(panelLeft, panelRight - 1, panelBottom - 1, COLOR_PANEL_BORDER)
+        graphics.verticalLine(panelRight - 1, panelTop, panelBottom - 1, COLOR_PANEL_BORDER)
+        for ((x, y) in listOf(
+            panelLeft + 4 to panelTop + 4,
+            panelRight - 5 to panelTop + 4,
+            panelLeft + 4 to panelBottom - 5,
+            panelRight - 5 to panelBottom - 5
+        )) {
+            graphics.fill(x, y, x + 2, y + 2, COLOR_RIVET)
+            graphics.fill(x + 1, y + 1, x + 2, y + 2, COLOR_PANEL_BORDER)
+        }
 
         val centerX = (panelLeft + panelRight) / 2
         graphics.centeredText(font, title, centerX, titleY, COLOR_TITLE_TEXT)

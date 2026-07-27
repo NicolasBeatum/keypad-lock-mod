@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "keypadlock:block/reinforced_iron_door_bottom"
-  }
-}
