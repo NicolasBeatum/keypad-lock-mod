@@ -1,6 +1,16 @@
 {
-  "item.keypadlock.lock": "Lock",
-  "item.keypadlock.key": "Key",
-  "block.keypadlock.reinforced_chest": "Reinforced Chest",
-  "block.keypadlock.reinforced_iron_door": "Reinforced Iron Door"
+  "item.keypadlock.lock": "Candado",
+  "item.keypadlock.key": "Llave",
+  "block.keypadlock.reinforced_chest": "Cofre Reforzado",
+  "block.keypadlock.reinforced_iron_door": "Puerta de Hierro Reforzada",
+
+  "item.keypadlock.lock.lore1": "Refuerza un cofre o una puerta de hierro.",
+  "item.keypadlock.lock.lore2": "Al colocarlo, creás una contraseña (4-8 dígitos) en un teclado.",
+  "item.keypadlock.lock.lore3": "Solo se abre con esa contraseña -- sin excepción, ni con redstone.",
+  "item.keypadlock.lock.lore4": "Indestructible salvo por una explosión muy potente.",
+
+  "item.keypadlock.key.lore1": "Quita el refuerzo de un cofre o puerta reforzada.",
+  "item.keypadlock.key.lore2": "Solo funciona si sos el dueño que puso el candado.",
+  "item.keypadlock.key.lore3": "No abre nada -- no hace falta la contraseña para usarla.",
+  "item.keypadlock.key.lore4": "Reutilizable: no se gasta al usarla."
 }

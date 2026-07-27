@@ -8,6 +8,7 @@ import net.minecraft.sounds.SoundEvents
 import net.minecraft.world.InteractionResult
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.level.Level
+import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.DoorBlock
 import net.minecraft.world.level.block.EntityBlock
 import net.minecraft.world.level.block.entity.BlockEntity
@@ -15,6 +16,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.properties.BlockSetType
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf
+import net.minecraft.world.level.redstone.Orientation
 import net.minecraft.world.phys.BlockHitResult
 
 /**
@@ -59,4 +61,30 @@ class ReinforcedIronDoorBlock(properties: BlockBehaviour.Properties) :
         NetworkHandlersServer.sendOpenKeypad(serverPlayer, lowerPos, KeypadMode.OPEN_DOOR)
         return InteractionResult.CONSUME
     }
+
+    /**
+     * Vanilla DoorBlock usa este hook para escuchar señal de redstone y
+     * abrir/cerrar segun el estado de POWERED -- eso es exactamente lo que
+     * NO queremos: botones, palancas, circuitos, etc. no deberian poder
+     * abrir una puerta reforzada, solo la contraseña. No llamar a super()
+     * corta esa reactividad a redstone por completo.
+     */
+    override fun neighborChanged(
+        state: BlockState,
+        level: Level,
+        pos: BlockPos,
+        neighborBlock: Block,
+        orientation: Orientation?,
+        movedByPiston: Boolean
+    ) {
+        // no-op a proposito
+    }
+
+    /**
+     * Vanilla DoorBlock exige un bloque de apoyo solido debajo (mitad
+     * inferior) o la mitad inferior debajo (mitad superior), y se rompe solo
+     * si se lo quitan. La puerta reforzada puede FLOTAR a proposito -- una
+     * vez con el candado puesto, romper el bloque de abajo no la afecta.
+     */
+    override fun canSurvive(state: BlockState, level: net.minecraft.world.level.LevelReader, pos: BlockPos): Boolean = true
 }

@@ -5,11 +5,15 @@ import com.keypadlock.block.ReinforcedChestBlockEntity
 import com.keypadlock.block.ReinforcedDoorBlockEntity
 import com.keypadlock.network.KeypadMode
 import com.keypadlock.network.NetworkHandlersServer
+import net.minecraft.ChatFormatting
 import net.minecraft.core.BlockPos
 import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.InteractionResult
 import net.minecraft.world.item.Item
+import net.minecraft.world.item.Item.TooltipContext
+import net.minecraft.world.item.TooltipFlag
+import net.minecraft.world.item.component.TooltipDisplay
 import net.minecraft.world.item.context.UseOnContext
 import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.ChestBlock
@@ -17,6 +21,7 @@ import net.minecraft.world.level.block.DoorBlock
 import net.minecraft.world.level.block.entity.ChestBlockEntity
 import net.minecraft.world.level.block.state.properties.ChestType
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf
+import java.util.function.Consumer
 
 /**
  * Candado: refuerza un cofre o puerta de hierro VANILLA (sin reforzar
@@ -26,6 +31,18 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf
  * Todo el trabajo real ocurre server-side.
  */
 class LockItem(properties: Properties) : Item(properties) {
+
+    override fun appendHoverText(
+        stack: net.minecraft.world.item.ItemStack,
+        context: TooltipContext,
+        tooltipDisplay: TooltipDisplay,
+        add: Consumer<Component>,
+        flag: TooltipFlag
+    ) {
+        for (i in 1..4) {
+            add.accept(Component.translatable("item.keypadlock.lock.lore$i").withStyle(ChatFormatting.GRAY))
+        }
+    }
 
     override fun useOn(context: UseOnContext): InteractionResult {
         val level = context.level

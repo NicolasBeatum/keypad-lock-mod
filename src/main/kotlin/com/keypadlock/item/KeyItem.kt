@@ -5,6 +5,7 @@ import com.keypadlock.block.ReinforcedChestBlockEntity
 import com.keypadlock.block.ReinforcedDoorBlockEntity
 import com.keypadlock.block.ReinforcedIronDoorBlock
 import com.keypadlock.block.ReinforcementOps
+import net.minecraft.ChatFormatting
 import net.minecraft.core.BlockPos
 import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerPlayer
@@ -12,9 +13,14 @@ import net.minecraft.sounds.SoundEvents
 import net.minecraft.sounds.SoundSource
 import net.minecraft.world.InteractionResult
 import net.minecraft.world.item.Item
+import net.minecraft.world.item.Item.TooltipContext
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.TooltipFlag
+import net.minecraft.world.item.component.TooltipDisplay
 import net.minecraft.world.item.context.UseOnContext
 import net.minecraft.world.level.block.DoorBlock
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf
+import java.util.function.Consumer
 
 /**
  * Llave: revierte un cofre o puerta reforzada a la version vanilla, SOLO si
@@ -24,6 +30,18 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf
  * [ReinforcementOps] (compartido con la cancelacion de password sin confirmar).
  */
 class KeyItem(properties: Properties) : Item(properties) {
+
+    override fun appendHoverText(
+        stack: ItemStack,
+        context: TooltipContext,
+        tooltipDisplay: TooltipDisplay,
+        add: Consumer<Component>,
+        flag: TooltipFlag
+    ) {
+        for (i in 1..4) {
+            add.accept(Component.translatable("item.keypadlock.key.lore$i").withStyle(ChatFormatting.GRAY))
+        }
+    }
 
     override fun useOn(context: UseOnContext): InteractionResult {
         val level = context.level
